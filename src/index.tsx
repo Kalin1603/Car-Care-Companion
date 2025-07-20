@@ -1,9 +1,8 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { App } from './src/App';
-import { ThemeProvider } from './src/contexts/ThemeContext';
-import { I18nProvider } from './src/contexts/I18nContext';
-import { CurrencyProvider } from './src/contexts/CurrencyContext';
+import { App } from './App';
+import { ThemeProvider } from './contexts/ThemeContext';
+import { I18nProvider } from './contexts/I18nContext';
 
 const container = document.getElementById('root');
 if (container) {
@@ -12,9 +11,7 @@ if (container) {
     <React.StrictMode>
       <ThemeProvider>
         <I18nProvider>
-          <CurrencyProvider>
-            <App />
-          </CurrencyProvider>
+          <App />
         </I18nProvider>
       </ThemeProvider>
     </React.StrictMode>

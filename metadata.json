@@ -1,6 +1,6 @@
 {
-  "name": "Авто Дневник",
-  "description": "Уеб приложение за управление и следене на ремонтите и обслужванията на автомобила с AI асистент.",
+  "name": "Auto Logbook",
+  "description": "A web application for managing and tracking car repairs and services with an AI assistant.",
   "requestFramePermissions": [],
   "prompt": ""
 }
