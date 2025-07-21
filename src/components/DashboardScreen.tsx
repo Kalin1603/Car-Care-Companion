@@ -9,9 +9,10 @@ interface DashboardScreenProps {
     car: Car;
     services: ServiceRecord[];
     user: User;
+    onEditService: (service: ServiceRecord) => void;
 }
 
-export const DashboardScreen: FC<DashboardScreenProps> = ({ car, services, user }) => {
+export const DashboardScreen: FC<DashboardScreenProps> = ({ car, services, user, onEditService }) => {
     const { t } = useI18n();
     const { currency } = useCurrency();
 
@@ -43,7 +44,7 @@ export const DashboardScreen: FC<DashboardScreenProps> = ({ car, services, user 
                  </div>
             </div>
            
-            <ServiceHistory services={services} />
+            <ServiceHistory services={services} onEdit={onEditService} />
         </div>
     );
 };

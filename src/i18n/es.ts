@@ -61,7 +61,8 @@ export default {
     "serviceStation": "Taller:",
     "notes": "Notas:",
     "noServices": "Aún no ha añadido ningún servicio.",
-    "notAvailable": "N/D"
+    "notAvailable": "N/D",
+    "edit": "Editar servicio"
   },
   "carProfile": {
     "title": "Mi Auto",
@@ -75,8 +76,7 @@ export default {
     "vin": "Número VIN",
     "imageUrl": "URL de la Imagen",
     "imageUrlPlaceholder": "Pegue un enlace a la imagen aquí",
-    "save": "Guardar Cambios",
-    "savedSuccess": "¡Datos del auto guardados correctamente!"
+    "save": "Guardar Cambios"
   },
   "diagnostics": {
     "title": "Diagnóstico IA",
@@ -95,6 +95,7 @@ export default {
   "modals": {
     "close": "Cerrar",
     "addServiceTitle": "Nuevo Servicio / Reparación",
+    "editServiceTitle": "Editar Servicio / Reparación",
     "serviceType": "Tipo de Servicio",
     "serviceTypePlaceholder": "ej. Cambio de aceite y filtros",
     "category": "Categoría",
@@ -128,21 +129,25 @@ export default {
     "fullName": "Nombre",
     "email": "Correo",
     "phone": "Teléfono",
+    "address": "Dirección",
     "saveData": "Guardar Datos",
-    "dataUpdatedSuccess": "¡Datos actualizados correctamente!",
     "changePassword": "Cambiar Contraseña",
     "oldPassword": "Contraseña Antigua",
     "newPassword": "Nueva Contraseña",
     "errorOldPassword": "¡Contraseña antigua incorrecta!",
     "errorNewPassword": "La nueva contraseña debe tener al menos 3 caracteres.",
     "changePasswordAction": "Cambiar Contraseña",
-    "passwordChangedSuccess": "¡Contraseña cambiada correctamente!",
     "logout": "Cerrar Sesión",
     "language": "Idioma"
   },
   "common": {
       "loading": "Cargando...",
       "pro": "PRO",
-      "aiErrorUnavailable": "El servicio de IA no está disponible. Por favor, verifique la clave API."
+      "aiErrorUnavailable": "El servicio de IA no está disponible. Por favor, verifique la clave API.",
+      "carSavedSuccess": "¡Datos del auto guardados correctamente!",
+      "profileUpdatedSuccess": "¡Perfil actualizado correctamente!",
+      "passwordChangedSuccess": "¡Contraseña cambiada correctamente!",
+      "serviceAddedSuccess": "¡Servicio añadido correctamente!",
+      "serviceUpdatedSuccess": "¡Servicio actualizado correctamente!"
   }
 };

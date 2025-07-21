@@ -4,7 +4,12 @@ import { useI18n } from '../hooks/useI18n';
 import { currencyService } from '../services/currencyService';
 import { useCurrency } from '../hooks/useCurrency';
 
-export const ServiceHistory: FC<{ services: ServiceRecord[] }> = ({ services }) => {
+interface ServiceHistoryProps {
+  services: ServiceRecord[];
+  onEdit: (service: ServiceRecord) => void;
+}
+
+export const ServiceHistory: FC<ServiceHistoryProps> = ({ services, onEdit }) => {
   const { t } = useI18n();
   const { currency } = useCurrency();
 
@@ -22,8 +27,15 @@ export const ServiceHistory: FC<{ services: ServiceRecord[] }> = ({ services }) 
             .map(service => (
               <article key={service.id} className="service-record">
                 <div className="service-record-header">
+                  <div className="service-record-title">
                     <h3>{service.type}</h3>
                     <span className="service-category">{t(`modals.categoryOptions.${service.category.toLowerCase()}`) || service.category}</span>
+                  </div>
+                   <div className="service-record-actions">
+                        <button onClick={() => onEdit(service)} className="btn-icon" title={t('serviceHistory.edit')}>
+                            <span className="material-symbols-outlined">edit</span>
+                        </button>
+                    </div>
                 </div>
                 <div className="service-record-body">
                   <p><strong>{t('serviceHistory.date')}</strong> {new Date(service.date).toLocaleDateString()}</p>

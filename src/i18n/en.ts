@@ -61,7 +61,8 @@ export default {
     "serviceStation": "Service Station:",
     "notes": "Notes:",
     "noServices": "You haven't added any services yet.",
-    "notAvailable": "N/A"
+    "notAvailable": "N/A",
+    "edit": "Edit service"
   },
   "carProfile": {
     "title": "My Car",
@@ -75,8 +76,7 @@ export default {
     "vin": "VIN Number",
     "imageUrl": "Image URL",
     "imageUrlPlaceholder": "Paste an image link here",
-    "save": "Save Changes",
-    "savedSuccess": "Car data saved successfully!"
+    "save": "Save Changes"
   },
   "diagnostics": {
     "title": "AI Diagnostics",
@@ -95,6 +95,7 @@ export default {
   "modals": {
     "close": "Close",
     "addServiceTitle": "New Service / Repair",
+    "editServiceTitle": "Edit Service / Repair",
     "serviceType": "Service Type",
     "serviceTypePlaceholder": "e.g., Oil and filter change",
     "category": "Category",
@@ -128,21 +129,25 @@ export default {
     "fullName": "Name",
     "email": "Email",
     "phone": "Phone",
+    "address": "Address",
     "saveData": "Save Data",
-    "dataUpdatedSuccess": "Data updated successfully!",
     "changePassword": "Change Password",
     "oldPassword": "Old Password",
     "newPassword": "New Password",
     "errorOldPassword": "Wrong old password!",
     "errorNewPassword": "New password must be at least 3 characters long.",
     "changePasswordAction": "Change Password",
-    "passwordChangedSuccess": "Password changed successfully!",
     "logout": "Logout",
     "language": "Language"
   },
   "common": {
       "loading": "Loading...",
       "pro": "PRO",
-      "aiErrorUnavailable": "AI service is not available. Please check the API key."
+      "aiErrorUnavailable": "AI service is not available. Please check the API key.",
+      "carSavedSuccess": "Car data saved successfully!",
+      "profileUpdatedSuccess": "Profile updated successfully!",
+      "passwordChangedSuccess": "Password changed successfully!",
+      "serviceAddedSuccess": "Service added successfully!",
+      "serviceUpdatedSuccess": "Service updated successfully!"
   }
 };

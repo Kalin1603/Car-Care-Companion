@@ -53,3 +53,11 @@ export type View = 'dashboard' | 'car_profile' | 'diagnostics';
 export type Language = 'en' | 'bg' | 'es' | 'de' | 'fr';
 
 export type Theme = 'light' | 'dark';
+
+export type ToastType = 'success' | 'error' | 'info';
+
+export interface Toast {
+  id: string;
+  message: string;
+  type: ToastType;
+}

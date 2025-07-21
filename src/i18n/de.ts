@@ -61,7 +61,8 @@ export default {
     "serviceStation": "Werkstatt:",
     "notes": "Notizen:",
     "noServices": "Sie haben noch keine Services hinzugefügt.",
-    "notAvailable": "N/A"
+    "notAvailable": "N/A",
+    "edit": "Service bearbeiten"
   },
   "carProfile": {
     "title": "Mein Auto",
@@ -75,8 +76,7 @@ export default {
     "vin": "FIN-Nummer",
     "imageUrl": "Bild-URL",
     "imageUrlPlaceholder": "Fügen Sie hier einen Bildlink ein",
-    "save": "Änderungen speichern",
-    "savedSuccess": "Fahrzeugdaten erfolgreich gespeichert!"
+    "save": "Änderungen speichern"
   },
   "diagnostics": {
     "title": "KI-Diagnose",
@@ -95,6 +95,7 @@ export default {
   "modals": {
     "close": "Schließen",
     "addServiceTitle": "Neuer Service / Reparatur",
+    "editServiceTitle": "Service / Reparatur bearbeiten",
     "serviceType": "Servicetyp",
     "serviceTypePlaceholder": "z.B. Öl- und Filterwechsel",
     "category": "Kategorie",
@@ -128,21 +129,25 @@ export default {
     "fullName": "Name",
     "email": "E-Mail",
     "phone": "Telefon",
+    "address": "Adresse",
     "saveData": "Daten speichern",
-    "dataUpdatedSuccess": "Daten erfolgreich aktualisiert!",
     "changePassword": "Passwort ändern",
     "oldPassword": "Altes Passwort",
     "newPassword": "Neues Passwort",
     "errorOldPassword": "Falsches altes Passwort!",
     "errorNewPassword": "Das neue Passwort muss mindestens 3 Zeichen lang sein.",
     "changePasswordAction": "Passwort ändern",
-    "passwordChangedSuccess": "Passwort erfolgreich geändert!",
     "logout": "Abmelden",
     "language": "Sprache"
   },
   "common": {
       "loading": "Wird geladen...",
       "pro": "PRO",
-      "aiErrorUnavailable": "Der KI-Dienst ist nicht verfügbar. Bitte überprüfen Sie den API-Schlüssel."
+      "aiErrorUnavailable": "Der KI-Dienst ist nicht verfügbar. Bitte überprüfen Sie den API-Schlüssel.",
+      "carSavedSuccess": "Fahrzeugdaten erfolgreich gespeichert!",
+      "profileUpdatedSuccess": "Profil erfolgreich aktualisiert!",
+      "passwordChangedSuccess": "Passwort erfolgreich geändert!",
+      "serviceAddedSuccess": "Service erfolgreich hinzugefügt!",
+      "serviceUpdatedSuccess": "Service erfolgreich aktualisiert!"
   }
 };

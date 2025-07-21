@@ -4,17 +4,23 @@ import { apiService } from '../services/apiService';
 import { useI18n } from '../hooks/useI18n';
 import { currencyService } from '../services/currencyService';
 import { useCurrency } from '../hooks/useCurrency';
+import { useToast } from '../hooks/useToast';
 
-interface AddServiceModalProps { 
-    isOpen: boolean; 
-    onClose: () => void; 
-    onSave: (service: Omit<ServiceRecord, 'id' | 'date'>) => void;
+interface ServiceModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    onSave: (service: Omit<ServiceRecord, 'id' | 'date'>, idToUpdate?: string) => void;
     car: Car;
+    serviceToEdit: ServiceRecord | null;
 }
 
-export const AddServiceModal: FC<AddServiceModalProps> = ({ isOpen, onClose, onSave, car }) => {
+export const AddServiceModal: FC<ServiceModalProps> = ({ isOpen, onClose, onSave, car, serviceToEdit }) => {
   const { t, language } = useI18n();
   const { currency } = useCurrency();
+  const { showToast } = useToast();
+  
+  const isEditing = !!serviceToEdit;
+
   const [type, setType] = useState('');
   const [mileage, setMileage] = useState(car.mileage);
   const [cost, setCost] = useState(0);
@@ -26,25 +32,32 @@ export const AddServiceModal: FC<AddServiceModalProps> = ({ isOpen, onClose, onS
   const [isLoadingAI, setIsLoadingAI] = useState(false);
   const [errorAI, setErrorAI] = useState<string | null>(null);
 
+  const resetState = useCallback(() => {
+    setType(serviceToEdit?.type || '');
+    setMileage(serviceToEdit?.mileage || car.mileage);
+    setCost(serviceToEdit ? currencyService.convertToSelected(serviceToEdit.cost, currency) : 0);
+    setNotes(serviceToEdit?.notes || '');
+    setCategory(serviceToEdit?.category || 'general');
+    setServiceStation(serviceToEdit?.serviceStation || '');
+    setAiResponse(null);
+    setIsLoadingAI(false);
+    setErrorAI(null);
+  }, [serviceToEdit, car.mileage, currency]);
+
   useEffect(() => {
-    if (isOpen) setMileage(car.mileage);
-  }, [isOpen, car.mileage])
+    if (isOpen) {
+      resetState();
+    }
+  }, [isOpen, resetState]);
 
   const handleSave = () => {
-    if (type && mileage > 0 && cost >= 0) {
-      const costInBaseCurrency = currencyService.convertToBase(cost, currency);
-      onSave({ type, mileage, cost: costInBaseCurrency, notes, category, serviceStation });
-      handleClose();
-    } else {
-      alert(t('modals.errorFillFields'));
+    if (!type.trim() || mileage <= 0 || cost < 0) {
+      showToast(t('modals.errorFillFields'), { type: 'error' });
+      return;
     }
+    const costInBaseCurrency = currencyService.convertToBase(cost, currency);
+    onSave({ type, mileage, cost: costInBaseCurrency, notes, category, serviceStation }, serviceToEdit?.id);
   };
-  
-  const handleClose = () => {
-    setType(''); setCost(0); setNotes(''); setCategory('general');
-    setServiceStation(''); setAiResponse(null); setIsLoadingAI(false); setErrorAI(null);
-    onClose();
-  }
 
   const getAIAdvice = useCallback(async () => {
     if (!type) {
@@ -65,13 +78,15 @@ export const AddServiceModal: FC<AddServiceModalProps> = ({ isOpen, onClose, onS
   if (!isOpen) return null;
   
   const categoryOptions = ['general', 'engine', 'brakes', 'suspension', 'electrical', 'tires', 'other'];
+  
+  const modalTitle = isEditing ? t('modals.editServiceTitle') : t('modals.addServiceTitle');
 
   return (
-    <div className="modal-overlay" onClick={handleClose}>
+    <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <header className="modal-header">
-          <h2>{t('modals.addServiceTitle')}</h2>
-          <button onClick={handleClose} className="modal-close-btn" aria-label={t('modals.close')}>&times;</button>
+          <h2>{modalTitle}</h2>
+          <button onClick={onClose} className="modal-close-btn" aria-label={t('modals.close')}>&times;</button>
         </header>
         <div className="modal-body">
           <div className="form-grid">
@@ -108,7 +123,7 @@ export const AddServiceModal: FC<AddServiceModalProps> = ({ isOpen, onClose, onS
         </div>
         <footer className="modal-actions">
           <div className="right-actions">
-            <button className="btn btn-secondary" onClick={handleClose}>{t('modals.cancel')}</button>
+            <button className="btn btn-secondary" onClick={onClose}>{t('modals.cancel')}</button>
             <button className="btn btn-primary" onClick={handleSave}>{t('modals.save')}</button>
           </div>
         </footer>

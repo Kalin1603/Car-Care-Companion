@@ -2,6 +2,7 @@ import React, { FC, useState, useEffect, useRef } from 'react';
 import { User } from '../types';
 import { useI18n } from '../hooks/useI18n';
 import { LanguageSwitcher } from './LanguageSwitcher';
+import { useToast } from '../hooks/useToast';
 
 interface ProfileSettingsModalProps {
     isOpen: boolean; 
@@ -15,18 +16,19 @@ type ProfileTab = 'profile' | 'security' | 'preferences';
 
 export const ProfileSettingsModal: FC<ProfileSettingsModalProps> = ({ isOpen, onClose, user, onSave, onLogout }) => {
     const { t } = useI18n();
+    const { showToast } = useToast();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [activeTab, setActiveTab] = useState<ProfileTab>('profile');
     
     const [formData, setFormData] = useState({
-        fullName: user.fullName, email: user.email, phone: user.phone, profilePicture: user.profilePicture
+        fullName: user.fullName, email: user.email, phone: user.phone, profilePicture: user.profilePicture, address: user.address || ''
     });
     const [passData, setPassData] = useState({ oldPass: '', newPass: '' });
 
     useEffect(() => {
       if(isOpen) {
         setActiveTab('profile');
-        setFormData({ fullName: user.fullName, email: user.email, phone: user.phone, profilePicture: user.profilePicture });
+        setFormData({ fullName: user.fullName, email: user.email, phone: user.phone, profilePicture: user.profilePicture, address: user.address || '' });
         setPassData({ oldPass: '', newPass: '' });
       }
     }, [user, isOpen]);
@@ -54,21 +56,19 @@ export const ProfileSettingsModal: FC<ProfileSettingsModalProps> = ({ isOpen, on
 
     const handleSaveData = () => {
         onSave(formData);
-        alert(t('modals.dataUpdatedSuccess'));
     };
 
     const handleSavePassword = () => {
         if (passData.oldPass !== user.password) {
-            alert(t('modals.errorOldPassword'));
+            showToast(t('modals.errorOldPassword'), { type: 'error' });
             return;
         }
         if (passData.newPass.length < 3) {
-            alert(t('modals.errorNewPassword'));
+            showToast(t('modals.errorNewPassword'), { type: 'error' });
             return;
         }
         onSave({ password: passData.newPass });
         setPassData({ oldPass: '', newPass: '' });
-        alert(t('modals.passwordChangedSuccess'));
     };
 
     if (!isOpen) return null;
@@ -92,9 +92,7 @@ export const ProfileSettingsModal: FC<ProfileSettingsModalProps> = ({ isOpen, on
                             <div className="form-group"><label>{t('modals.fullName')}</label><input type="text" name="fullName" value={formData.fullName} onChange={handleDataChange} /></div>
                             <div className="form-group"><label>{t('modals.email')}</label><input type="email" name="email" value={formData.email} onChange={handleDataChange} disabled /></div>
                             <div className="form-group"><label>{t('modals.phone')}</label><input type="tel" name="phone" value={formData.phone} onChange={handleDataChange} /></div>
-                            <div className="form-actions-inline">
-                                <button className="btn btn-primary" onClick={handleSaveData}>{t('modals.saveData')}</button>
-                            </div>
+                            <div className="form-group"><label>{t('modals.address')}</label><input type="text" name="address" value={formData.address} onChange={handleDataChange} /></div>
                         </div>
                     </div>
                 );
@@ -103,9 +101,6 @@ export const ProfileSettingsModal: FC<ProfileSettingsModalProps> = ({ isOpen, on
                     <div>
                         <div className="form-group"><label>{t('modals.oldPassword')}</label><input type="password" name="oldPass" value={passData.oldPass} onChange={handlePassChange} /></div>
                         <div className="form-group"><label>{t('modals.newPassword')}</label><input type="password" name="newPass" value={passData.newPass} onChange={handlePassChange} /></div>
-                        <div className="form-actions-inline">
-                            <button className="btn btn-secondary" onClick={handleSavePassword}>{t('modals.changePasswordAction')}</button>
-                        </div>
                     </div>
                 );
             case 'preferences':
@@ -135,7 +130,12 @@ export const ProfileSettingsModal: FC<ProfileSettingsModalProps> = ({ isOpen, on
                 <footer className="modal-actions">
                     <button className="btn btn-danger" onClick={onLogout}>{t('modals.logout')}</button>
                     <div className="right-actions">
-                        <button className="btn btn-secondary" onClick={onClose}>{t('modals.close')}</button>
+                       {activeTab === 'profile' && (
+                           <button className="btn btn-primary" onClick={handleSaveData}>{t('modals.saveData')}</button>
+                       )}
+                       {activeTab === 'security' && (
+                            <button className="btn btn-primary" onClick={handleSavePassword}>{t('modals.changePasswordAction')}</button>
+                       )}
                     </div>
                 </footer>
             </div>

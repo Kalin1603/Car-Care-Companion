@@ -61,7 +61,8 @@ export default {
     "serviceStation": "Garage :",
     "notes": "Notes :",
     "noServices": "Vous n'avez pas encore ajouté de services.",
-    "notAvailable": "N/A"
+    "notAvailable": "N/A",
+    "edit": "Modifier le service"
   },
   "carProfile": {
     "title": "Ma Voiture",
@@ -75,8 +76,7 @@ export default {
     "vin": "Numéro VIN",
     "imageUrl": "URL de l'image",
     "imageUrlPlaceholder": "Collez un lien d'image ici",
-    "save": "Enregistrer les modifications",
-    "savedSuccess": "Données du véhicule enregistrées avec succès !"
+    "save": "Enregistrer les modifications"
   },
   "diagnostics": {
     "title": "Diagnostic IA",
@@ -95,6 +95,7 @@ export default {
   "modals": {
     "close": "Fermer",
     "addServiceTitle": "Nouveau service / Réparation",
+    "editServiceTitle": "Modifier service / Réparation",
     "serviceType": "Type de service",
     "serviceTypePlaceholder": "ex. Vidange d'huile et changement de filtres",
     "category": "Catégorie",
@@ -128,21 +129,25 @@ export default {
     "fullName": "Nom",
     "email": "E-mail",
     "phone": "Téléphone",
+    "address": "Adresse",
     "saveData": "Enregistrer les données",
-    "dataUpdatedSuccess": "Données mises à jour avec succès !",
     "changePassword": "Changer le mot de passe",
     "oldPassword": "Ancien mot de passe",
     "newPassword": "Nouveau mot de passe",
     "errorOldPassword": "Ancien mot de passe incorrect !",
     "errorNewPassword": "Le nouveau mot de passe doit comporter au moins 3 caractères.",
     "changePasswordAction": "Changer le mot de passe",
-    "passwordChangedSuccess": "Mot de passe changé avec succès !",
     "logout": "Déconnexion",
     "language": "Langue"
   },
   "common": {
       "loading": "Chargement...",
       "pro": "PRO",
-      "aiErrorUnavailable": "Le service IA n'est pas disponible. Veuillez vérifier la clé API."
+      "aiErrorUnavailable": "Le service IA n'est pas disponible. Veuillez vérifier la clé API.",
+      "carSavedSuccess": "Données du véhicule enregistrées avec succès !",
+      "profileUpdatedSuccess": "Profil mis à jour avec succès !",
+      "passwordChangedSuccess": "Mot de passe changé avec succès !",
+      "serviceAddedSuccess": "Service ajouté avec succès !",
+      "serviceUpdatedSuccess": "Service mis à jour avec succès !"
   }
 };

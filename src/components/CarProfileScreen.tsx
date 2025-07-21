@@ -31,7 +31,6 @@ export const CarProfileScreen: FC<CarProfileScreenProps> = ({ car, onUpdate }) =
     const handleSave = (e: React.FormEvent) => {
         e.preventDefault();
         onUpdate(formData);
-        alert(t('carProfile.savedSuccess'));
     };
 
     return (

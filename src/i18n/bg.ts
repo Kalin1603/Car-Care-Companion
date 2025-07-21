@@ -61,7 +61,8 @@ export default {
     "serviceStation": "Сервиз:",
     "notes": "Бележки:",
     "noServices": "Все още нямате добавени обслужвания.",
-    "notAvailable": "Н/А"
+    "notAvailable": "Н/А",
+    "edit": "Редактирай обслужване"
   },
   "carProfile": {
     "title": "Моят Автомобил",
@@ -75,8 +76,7 @@ export default {
     "vin": "VIN номер",
     "imageUrl": "URL на снимка",
     "imageUrlPlaceholder": "Поставете линк към снимката тук",
-    "save": "Запази промените",
-    "savedSuccess": "Данните за автомобила са запазени!"
+    "save": "Запази промените"
   },
   "diagnostics": {
     "title": "AI Диагностика",
@@ -95,6 +95,7 @@ export default {
   "modals": {
     "close": "Затвори",
     "addServiceTitle": "Ново обслужване / Ремонт",
+    "editServiceTitle": "Редакция на обслужване / Ремонт",
     "serviceType": "Тип на обслужването",
     "serviceTypePlaceholder": "напр. Смяна на масло и филтри",
     "category": "Категория",
@@ -128,21 +129,25 @@ export default {
     "fullName": "Име",
     "email": "Имейл",
     "phone": "Телефон",
+    "address": "Адрес",
     "saveData": "Запази данни",
-    "dataUpdatedSuccess": "Данните са актуализирани!",
     "changePassword": "Смяна на парола",
     "oldPassword": "Стара парола",
     "newPassword": "Нова парола",
     "errorOldPassword": "Грешна стара парола!",
     "errorNewPassword": "Новата парола трябва да е поне 3 символа.",
     "changePasswordAction": "Смени паролата",
-    "passwordChangedSuccess": "Паролата е сменена успешно!",
     "logout": "Изход от профила",
     "language": "Език"
   },
   "common": {
       "loading": "Зареждане...",
       "pro": "PRO",
-      "aiErrorUnavailable": "AI услугата не е налична. Моля, проверете API ключа."
+      "aiErrorUnavailable": "AI услугата не е налична. Моля, проверете API ключа.",
+      "carSavedSuccess": "Данните за автомобила са запазени!",
+      "profileUpdatedSuccess": "Профилът е актуализиран успешно!",
+      "passwordChangedSuccess": "Паролата е сменена успешно!",
+      "serviceAddedSuccess": "Обслужването е добавено успешно!",
+      "serviceUpdatedSuccess": "Обслужването е актуализирано успешно!"
   }
 };
