@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { User, View } from '../types';
 import { useI18n } from '../hooks/useI18n';
+import { subscriptionService } from '../services/subscriptionService';
 import { Logo } from './Logo';
 
 interface SidebarProps {
@@ -10,9 +11,10 @@ interface SidebarProps {
     onNavigate: (view: View) => void;
     user: User;
     onProfileClick: () => void;
+    onSubscriptionClick: () => void;
 }
 
-export const Sidebar: FC<SidebarProps> = ({ isCollapsed, toggleCollapse, currentView, onNavigate, user, onProfileClick }) => {
+export const Sidebar: FC<SidebarProps> = ({ isCollapsed, toggleCollapse, currentView, onNavigate, user, onProfileClick, onSubscriptionClick }) => {
     const { t } = useI18n();
 
     const navItems: { id: View, name: string, icon: string, pro?: boolean }[] = [
@@ -20,6 +22,9 @@ export const Sidebar: FC<SidebarProps> = ({ isCollapsed, toggleCollapse, current
         { id: 'car_profile', name: t('sidebar.carProfile'), icon: 'directions_car' },
         { id: 'diagnostics', name: t('sidebar.diagnostics'), icon: 'build_circle', pro: true },
     ];
+
+    const hasProAccess = subscriptionService.hasFeatureAccess(user, 'ai_diagnostics');
+    const currentTier = user.subscriptionTier || 'basic';
 
     return (
         <aside className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
@@ -32,12 +37,37 @@ export const Sidebar: FC<SidebarProps> = ({ isCollapsed, toggleCollapse, current
                 </div>
                 <nav className="sidebar-nav">
                     {navItems.map(item => (
-                        <button key={item.id} title={isCollapsed ? item.name : ''} className={`sidebar-nav-item ${currentView === item.id ? 'active' : ''}`} onClick={() => onNavigate(item.id)}>
+                        <button 
+                            key={item.id} 
+                            title={isCollapsed ? item.name : ''} 
+                            className={`sidebar-nav-item ${currentView === item.id ? 'active' : ''} ${item.pro && !hasProAccess ? 'disabled' : ''}`} 
+                            onClick={() => {
+                                if (item.pro && !hasProAccess) {
+                                    onSubscriptionClick();
+                                } else {
+                                    onNavigate(item.id);
+                                }
+                            }}
+                        >
                             <span className="material-symbols-outlined">{item.icon}</span>
                             {!isCollapsed && <span className="nav-item-text">{item.name}</span>}
-                            {!isCollapsed && item.pro && <span className="pro-badge">{t('common.pro')}</span>}
+                            {!isCollapsed && item.pro && !hasProAccess && <span className="pro-badge">{t('common.pro')}</span>}
                         </button>
                     ))}
+                    
+                    <button 
+                        className="sidebar-nav-item subscription-item"
+                        onClick={onSubscriptionClick}
+                        title={isCollapsed ? 'Subscription' : ''}
+                    >
+                        <span className="material-symbols-outlined">workspace_premium</span>
+                        {!isCollapsed && (
+                            <div className="subscription-info">
+                                <span className="nav-item-text">Subscription</span>
+                                <span className="subscription-tier">{currentTier.toUpperCase()}</span>
+                            </div>
+                        )}
+                    </button>
                 </nav>
             </div>
 

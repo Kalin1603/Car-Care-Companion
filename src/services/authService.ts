@@ -21,7 +21,7 @@ export const authService = {
     if (users.some(u => u.email === data.email)) {
       throw new Error("errorEmailExists");
     }
-    const newUser: User = { ...data, isConfirmed: false, profilePicture: null };
+    const newUser: User = { ...data, isConfirmed: false, profilePicture: null, subscriptionTier: 'basic' };
     users.push(newUser);
     localStorage.setItem('app_users', JSON.stringify(users));
     return newUser;

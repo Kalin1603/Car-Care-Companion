@@ -9,6 +9,7 @@ import { CarProfileScreen } from './components/CarProfileScreen';
 import { DiagnosticsScreen } from './components/DiagnosticsScreen';
 import { AddServiceModal } from './components/AddServiceModal';
 import { ProfileSettingsModal } from './components/ProfileSettingsModal';
+import { SubscriptionModal } from './components/SubscriptionModal';
 import { ThemeSwitcher } from './components/ThemeSwitcher';
 import { CurrencySwitcher } from './components/CurrencySwitcher';
 
@@ -23,6 +24,7 @@ export const App: FC<{ user: User; onLogout: () => void; onProfileUpdate: (data:
     const [isServiceModalOpen, setIsServiceModalOpen] = useState(false);
     const [editingService, setEditingService] = useState<ServiceRecord | null>(null);
     const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+    const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
     
     const { t } = useI18n();
     const { showToast } = useToast();
@@ -114,6 +116,7 @@ export const App: FC<{ user: User; onLogout: () => void; onProfileUpdate: (data:
                 onNavigate={setView} 
                 user={user} 
                 onProfileClick={() => setIsProfileModalOpen(true)}
+                onSubscriptionClick={() => setIsSubscriptionModalOpen(true)}
             />
             <main className="main-content">
                 <header className="main-header">
@@ -141,6 +144,12 @@ export const App: FC<{ user: User; onLogout: () => void; onProfileUpdate: (data:
                 user={user}
                 onSave={handleProfileSave}
                 onLogout={() => { onLogout(); setIsProfileModalOpen(false); }}
+            />
+            <SubscriptionModal
+                isOpen={isSubscriptionModalOpen}
+                onClose={() => setIsSubscriptionModalOpen(false)}
+                user={user}
+                onSubscriptionUpdate={onProfileUpdate}
             />
         </div>
     );
