@@ -463,6 +463,30 @@ export const AuthScreen: FC<{ onLoginSuccess: (user: User) => void }> = ({ onLog
                         </div>
                     </div>
                 </div>
+                width='100%' 
+                height='100%'
+                title="3D Background Animation"
+            />
+            <div className="auth-3d-overlay"></div>
+            <div className="auth-3d-content">
+                <div className="slideshow-text">
+                    <h1>Welcome to Auto Logbook</h1>
+                    <p>Your comprehensive car maintenance companion. Track services, get AI diagnostics, and keep your vehicle in perfect condition.</p>
+                    <div className="feature-highlights">
+                        <div className="feature">
+                            <span className="material-symbols-outlined">build_circle</span>
+                            <span>AI-Powered Diagnostics</span>
+                        </div>
+                        <div className="feature">
+                            <span className="material-symbols-outlined">history</span>
+                            <span>Complete Service History</span>
+                        </div>
+                        <div className="feature">
+                            <span className="material-symbols-outlined">notifications</span>
+                            <span>Smart Maintenance Reminders</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         
