@@ -3,16 +3,6 @@ import { authService } from '../services/authService';
 import { User } from '../types';
 import enTranslations from '../i18n/en.ts';
 
-const SLIDESHOW_IMAGES = [
-    'https://images.pexels.com/photos/8986139/pexels-photo-8986139.jpeg?auto=compress&cs=tinysrgb&w=1920',
-    'https://images.pexels.com/photos/4488636/pexels-photo-4488636.jpeg?auto=compress&cs=tinysrgb&w=1920',
-    'https://images.pexels.com/photos/68705/pexels-photo-68705.jpeg?auto=compress&cs=tinysrgb&w=1920',
-    'https://images.pexels.com/photos/4489749/pexels-photo-4489749.jpeg?auto=compress&cs=tinysrgb&w=1920',
-    'https://images.pexels.com/photos/3807276/pexels-photo-3807276.jpeg?auto=compress&cs=tinysrgb&w=1920',
-    'https://images.pexels.com/photos/1402787/pexels-photo-1402787.jpeg?auto=compress&cs=tinysrgb&w=1920',
-    'https://images.pexels.com/photos/1545743/pexels-photo-1545743.jpeg?auto=compress&cs=tinysrgb&w=1920',
-];
-
 // Local translation function to enforce English on this screen
 const getNestedTranslation = (key: string): string | undefined => {
     return key.split('.').reduce((obj: any, k) => obj && obj[k], enTranslations);
@@ -34,16 +24,40 @@ const t = (key: string, replacements?: { [key: string]: string | number }): stri
 interface OAuthProvider {
     id: string;
     name: string;
-    icon: string;
+    logoUrl: string;
     color: string;
     hoverColor: string;
 }
 
 const oauthProviders: OAuthProvider[] = [
-    { id: 'google', name: 'Google', icon: '🔍', color: '#4285f4', hoverColor: '#357ae8' },
-    { id: 'facebook', name: 'Facebook', icon: '📘', color: '#1877f2', hoverColor: '#166fe5' },
-    { id: 'twitter', name: 'Twitter/X', icon: '🐦', color: '#1da1f2', hoverColor: '#1a91da' },
-    { id: 'apple', name: 'Apple', icon: '🍎', color: '#000000', hoverColor: '#333333' },
+    { 
+        id: 'google', 
+        name: 'Google', 
+        logoUrl: 'https://developers.google.com/identity/images/g-logo.png', 
+        color: '#4285f4', 
+        hoverColor: '#357ae8' 
+    },
+    { 
+        id: 'facebook', 
+        name: 'Facebook', 
+        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg', 
+        color: '#1877f2', 
+        hoverColor: '#166fe5' 
+    },
+    { 
+        id: 'twitter', 
+        name: 'X', 
+        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/c/ce/X_logo_2023.svg', 
+        color: '#000000', 
+        hoverColor: '#333333' 
+    },
+    { 
+        id: 'apple', 
+        name: 'Apple', 
+        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg', 
+        color: '#000000', 
+        hoverColor: '#333333' 
+    },
 ];
 
 export const AuthScreen: FC<{ onLoginSuccess: (user: User) => void }> = ({ onLoginSuccess }) => {
@@ -55,21 +69,6 @@ export const AuthScreen: FC<{ onLoginSuccess: (user: User) => void }> = ({ onLog
   const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [regSuccessInfo, setRegSuccessInfo] = useState<{username: string, email: string} | null>(null);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
-
-  useEffect(() => {
-    // Preload first image
-    const img = new Image();
-    img.onload = () => setIsImageLoaded(true);
-    img.src = SLIDESHOW_IMAGES[0];
-
-    const timer = setInterval(() => {
-        setCurrentImageIndex(prevIndex => (prevIndex + 1) % SLIDESHOW_IMAGES.length);
-    }, 6000); // Change image every 6 seconds
-
-    return () => clearInterval(timer);
-  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = e.target;
@@ -134,7 +133,7 @@ export const AuthScreen: FC<{ onLoginSuccess: (user: User) => void }> = ({ onLog
       }
       
       if (activeTab === 'register') {
-        const { username, password, email, fullName, confirmPassword, address, phone } = formData;
+        const { username, password, email, fullName, confirmPassword, phone } = formData;
         if (!username || !password || !email || !fullName || !confirmPassword) {
           setError(t('auth.errorFields'));
           return;
@@ -149,7 +148,7 @@ export const AuthScreen: FC<{ onLoginSuccess: (user: User) => void }> = ({ onLog
         }
         
         await new Promise(resolve => setTimeout(resolve, 1000));
-        const registeredUser = authService.register({ username, password, email, phone, fullName, address });
+        const registeredUser = authService.register({ username, password, email, phone, fullName, address: formData.address });
         setRegSuccessInfo({ username: registeredUser.username, email: registeredUser.email });
       } else {
         await new Promise(resolve => setTimeout(resolve, 800));
@@ -217,7 +216,7 @@ export const AuthScreen: FC<{ onLoginSuccess: (user: User) => void }> = ({ onLog
             disabled={isLoading}
             style={{ '--provider-color': provider.color, '--provider-hover-color': provider.hoverColor } as React.CSSProperties}
           >
-            <span className="oauth-icon">{provider.icon}</span>
+            <img src={provider.logoUrl} alt={`${provider.name} logo`} className="oauth-logo" />
             <span className="oauth-text">{provider.name}</span>
           </button>
         ))}
@@ -243,7 +242,7 @@ export const AuthScreen: FC<{ onLoginSuccess: (user: User) => void }> = ({ onLog
             {activeTab === 'login' ? (
                 <>
                     <div className="form-group">
-                        <label>{t('auth.usernameLoginLabel')}</label>
+                        <label>Username*</label>
                         <div className="input-wrapper">
                             <span className="material-symbols-outlined input-icon">person</span>
                             <input 
@@ -258,7 +257,7 @@ export const AuthScreen: FC<{ onLoginSuccess: (user: User) => void }> = ({ onLog
                         </div>
                     </div>
                     <div className="form-group">
-                        <label>{t('auth.passwordLabel')}</label>
+                        <label>Password*</label>
                         <div className="input-wrapper">
                             <span className="material-symbols-outlined input-icon">lock</span>
                             <input 
@@ -282,7 +281,7 @@ export const AuthScreen: FC<{ onLoginSuccess: (user: User) => void }> = ({ onLog
                 <>
                     <div className="form-grid">
                         <div className="form-group">
-                            <label>{t('auth.fullNameLabel')}</label>
+                            <label>Full Name*</label>
                             <div className="input-wrapper">
                                 <span className="material-symbols-outlined input-icon">badge</span>
                                 <input 
@@ -297,7 +296,7 @@ export const AuthScreen: FC<{ onLoginSuccess: (user: User) => void }> = ({ onLog
                             </div>
                         </div>
                         <div className="form-group">
-                            <label>{t('auth.usernameLabel')}</label>
+                            <label>Username*</label>
                             <div className="input-wrapper">
                                 <span className="material-symbols-outlined input-icon">person</span>
                                 <input 
@@ -313,7 +312,7 @@ export const AuthScreen: FC<{ onLoginSuccess: (user: User) => void }> = ({ onLog
                         </div>
                     </div>
                     <div className="form-group">
-                        <label>{t('auth.emailLabel')}</label>
+                        <label>Email*</label>
                         <div className="input-wrapper">
                             <span className="material-symbols-outlined input-icon">email</span>
                             <input 
@@ -328,7 +327,21 @@ export const AuthScreen: FC<{ onLoginSuccess: (user: User) => void }> = ({ onLog
                         </div>
                     </div>
                     <div className="form-group">
-                        <label>{t('auth.addressLabel')}</label>
+                        <label>Phone</label>
+                        <div className="input-wrapper">
+                            <span className="material-symbols-outlined input-icon">phone</span>
+                            <input 
+                                name="phone" 
+                                type="tel" 
+                                value={formData.phone} 
+                                onChange={handleChange} 
+                                disabled={isLoading}
+                                placeholder="+1 (555) 123-4567"
+                            />
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        <label>Address (optional)</label>
                         <div className="input-wrapper">
                             <span className="material-symbols-outlined input-icon">home</span>
                             <input 
@@ -343,7 +356,7 @@ export const AuthScreen: FC<{ onLoginSuccess: (user: User) => void }> = ({ onLog
                     </div>
                     <div className="form-grid">
                         <div className="form-group">
-                            <label>{t('auth.passwordLabel')}</label>
+                            <label>Password*</label>
                             <div className="input-wrapper">
                                 <span className="material-symbols-outlined input-icon">lock</span>
                                 <input 
@@ -358,7 +371,7 @@ export const AuthScreen: FC<{ onLoginSuccess: (user: User) => void }> = ({ onLog
                             </div>
                         </div>
                         <div className="form-group">
-                            <label>{t('auth.confirmPasswordLabel')}</label>
+                            <label>Confirm Password*</label>
                             <div className="input-wrapper">
                                 <span className="material-symbols-outlined input-icon">lock</span>
                                 <input 
@@ -422,18 +435,18 @@ export const AuthScreen: FC<{ onLoginSuccess: (user: User) => void }> = ({ onLog
 
   return (
     <div className="auth-layout">
-        <div className="auth-slideshow">
-            {SLIDESHOW_IMAGES.map((src, index) => (
-                <div
-                    key={src}
-                    className={`auth-slideshow-image ${index === currentImageIndex ? 'active' : ''} ${isImageLoaded ? 'loaded' : ''}`}
-                    style={{ backgroundImage: `url(${src})` }}
-                />
-            ))}
-            <div className="auth-slideshow-overlay"></div>
-            <div className="auth-slideshow-content">
+        <div className="auth-3d-background">
+            <iframe 
+                src='https://my.spline.design/worldplanet-hvUCnnNiSZe9rmGAJ9vU7phm/' 
+                frameBorder='0' 
+                width='100%' 
+                height='100%'
+                title="3D Background Animation"
+            />
+            <div className="auth-3d-overlay"></div>
+            <div className="auth-3d-content">
                 <div className="slideshow-text">
-                    <h1>Welcome to ServiX</h1>
+                    <h1>Welcome to Auto Logbook</h1>
                     <p>Your comprehensive car maintenance companion. Track services, get AI diagnostics, and keep your vehicle in perfect condition.</p>
                     <div className="feature-highlights">
                         <div className="feature">
@@ -457,7 +470,7 @@ export const AuthScreen: FC<{ onLoginSuccess: (user: User) => void }> = ({ onLog
             <div className="auth-card">
                 <div className="auth-logo">
                     <span className="material-symbols-outlined">directions_car</span>
-                    Servi<span className="auth-logo-x">X</span>
+                    Auto Logbook
                 </div>
                 {regSuccessInfo ? renderConfirmationScreen() : renderForms()}
             </div>
